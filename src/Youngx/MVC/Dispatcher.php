@@ -4,7 +4,7 @@ namespace Youngx\MVC;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Youngx\EventHandler\Handler;
+use Youngx\MVC\Handler;
 use Youngx\MVC\Event\FilterResponseEvent;
 use Youngx\MVC\Event\GetResponseEvent;
 use Youngx\MVC\Event\GetResponseForExceptionEvent;
