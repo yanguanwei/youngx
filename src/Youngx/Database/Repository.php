@@ -186,9 +186,7 @@ class Repository
     {
         $unloadedIds = $entities = array();
         foreach ($ids as $id) {
-            if (null !== ($entity = $this->loadCachedEntity($entityType, $id))) {
-                $entities[] = $this->entities[$entityType][$id];
-            } else {
+            if (null ==  $this->loadCachedEntity($entityType, $id)) {
                 $unloadedIds[] = $id;
             }
         }
@@ -200,9 +198,13 @@ class Repository
             foreach ($newEntities as $entity) {
                 $this->cachingEntity($entity);
             }
-            $entities = array_merge($entities, $newEntities);
         }
 
+        foreach ($ids as $id) {
+            if (null !== ($entity = $this->loadCachedEntity($entityType, $id))) {
+                $entities[] = $entity;
+            }
+        }
         return $entities;
     }
 

@@ -86,15 +86,6 @@ abstract class Form extends Action
     public function runPostRequest()
     {
         try {
-            $data = $this->context->request()->request->all();
-            if ($data) {
-                $this->set($data);
-            }
-            $data = $this->context->request()->files->all();
-            if ($data) {
-                $this->set($data);
-            }
-
             $this->initPostRequest();
 
             $event = new GetResponseEvent();

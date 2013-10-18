@@ -87,11 +87,27 @@ abstract class Action
 
     final public function run()
     {
-        $this->initRequest();
-
         if ($this->context->request()->isMethod('POST')) {
+            $data = $this->context->request()->request->all();
+            if ($data) {
+                $this->set($data);
+            }
+            $data = $this->context->request()->files->all();
+            if ($data) {
+                $this->set($data);
+            }
+
+            $this->initRequest();
+
             return $this->runPostRequest();
         } else {
+            $data = $this->context->request()->query->all();
+            if ($data) {
+                $this->set($data);
+            }
+
+            $this->initRequest();
+
             return $this->runGetRequest();
         }
     }

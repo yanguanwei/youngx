@@ -37,15 +37,6 @@ abstract class ListView extends Action
 
     public function runGetRequest()
     {
-        $data = $this->context->request()->query->all();
-        if ($data) {
-            $this->set($data);
-        }
-        $data = $this->context->request()->request->all();
-        if ($data) {
-            $this->set($data);
-        }
-
         $this->initColumns();
         $this->initQuery();
         return parent::runGetRequest();

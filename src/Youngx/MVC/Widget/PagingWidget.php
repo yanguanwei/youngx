@@ -10,7 +10,6 @@ class PagingWidget extends Widget
 {
     private $pageSize = 10;
     private $total = 0;
-    private $attributes = array();
     private $page = 1;
     private $urlGenerator;
     private $currentClass = 'active';
@@ -150,6 +149,10 @@ class PagingWidget extends Widget
     {
         if ($this->urlGenerator) {
             return call_user_func($this->urlGenerator, $page, $context);
+        } else {
+            return $this->context->generateCurrentUrl(array(
+                    'page' => $page
+                ));
         }
     }
 
@@ -190,7 +193,7 @@ class PagingWidget extends Widget
      */
     public function setPage($page)
     {
-        $this->page = $page;
+        $this->page = intval($page);
     }
 
     /**
@@ -198,7 +201,7 @@ class PagingWidget extends Widget
      */
     public function setPageSize($pageSize)
     {
-        $this->pageSize = $pageSize;
+        $this->pageSize = intval($pageSize);
     }
 
     /**
@@ -222,7 +225,7 @@ class PagingWidget extends Widget
      */
     public function setTotal($total)
     {
-        $this->total = $total;
+        $this->total = intval($total);
     }
 
     /**

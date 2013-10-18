@@ -272,11 +272,13 @@ class Context
     public function login(Identity $identity, $duration = 0)
     {
         $this->container->get('user.identity.storage')->write($identity, $duration);
+        $this->handler()->trigger('user.login', $identity, $duration);
     }
 
     public function logout()
     {
         $this->container->get('user.identity.storage')->clear();
+        $this->handler()->trigger('user.logout', $this->identity());
     }
 
     public function matchRoute($path)
