@@ -16,7 +16,17 @@ abstract class ConfirmAction extends Action
         return 'confirm';
     }
 
-    protected function runRequest()
+    protected function doGetRequest()
+    {
+        return $this->doRequest();
+    }
+
+    protected function doPostRequest()
+    {
+        return $this->doRequest();
+    }
+
+    protected function doRequest()
     {
         $this->initRequest();
 

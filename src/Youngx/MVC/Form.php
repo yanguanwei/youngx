@@ -83,7 +83,7 @@ abstract class Form extends Action
         return $array;
     }
 
-    public function runPostRequest()
+    protected function doPostRequest()
     {
         try {
             $this->initPostRequest();
@@ -151,7 +151,7 @@ abstract class Form extends Action
         }
     }
 
-    public function runGetRequest()
+    protected function doGetRequest()
     {
         $this->initGetRequest();
         $this->context->handler()->trigger(array(

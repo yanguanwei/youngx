@@ -35,11 +35,12 @@ abstract class ListView extends Action
         return 'listView';
     }
 
-    public function runGetRequest()
+    protected function doGetRequest()
     {
         $this->initColumns();
         $this->initQuery();
-        return parent::runGetRequest();
+
+        return $this->renderResponse();
     }
 
     /**

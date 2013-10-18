@@ -15,7 +15,7 @@ abstract class TreeTable extends Table
         return null;
     }
 
-    public function runPostRequest()
+    protected function doPostRequest()
     {
         $propertyAccess = new PropertyAccess($this);
         $propertyAccess->set($this->context->request()->request->all());

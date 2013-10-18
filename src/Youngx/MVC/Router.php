@@ -6,7 +6,7 @@ use Youngx\MVC\Menu\Menu;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\Generator\UrlGenerator;
-use Symfony\Component\HttpFoundation\Request;
+use Youngx\MVC\Request;
 use Youngx\MVC\Handler;
 use Youngx\MVC\Menu\MenuCollection;
 

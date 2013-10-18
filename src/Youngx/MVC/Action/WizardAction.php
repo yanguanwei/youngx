@@ -24,9 +24,9 @@ abstract class WizardAction extends Action
         return 'wizard';
     }
 
-    public function runPostRequest()
+    protected function doPostRequest()
     {
-        $this->initRequest();
+        $this->initWizard();
         $action = $this->context->action($this->wizardContext->getActiveAction(), $this->wizardContext->getActiveActionData());
         $this->initAction($action);
         if ($action instanceof Form) {
@@ -43,17 +43,17 @@ abstract class WizardAction extends Action
         }
     }
 
-    public function runGetRequest()
+    protected function doGetRequest()
     {
         $step = $this->context->request()->query->get('step');
         if (null === $step) {
             $this->context->session()->remove('wizard_context');
         }
-        $this->initRequest($step);
+        $this->initWizard($step);
         return $this->nextResponse();
     }
 
-    protected function initRequest($step = null)
+    protected function initWizard($step = null)
     {
         $this->wizardContext = $this->initWizardContext();
         if (null !== $step) {

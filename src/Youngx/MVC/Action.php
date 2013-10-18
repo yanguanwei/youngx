@@ -88,26 +88,8 @@ abstract class Action
     final public function run()
     {
         if ($this->context->request()->isMethod('POST')) {
-            $data = $this->context->request()->request->all();
-            if ($data) {
-                $this->set($data);
-            }
-            $data = $this->context->request()->files->all();
-            if ($data) {
-                $this->set($data);
-            }
-
-            $this->initRequest();
-
             return $this->runPostRequest();
         } else {
-            $data = $this->context->request()->query->all();
-            if ($data) {
-                $this->set($data);
-            }
-
-            $this->initRequest();
-
             return $this->runGetRequest();
         }
     }
@@ -115,25 +97,35 @@ abstract class Action
     /**
      * @return Response | null
      */
-    public function runPostRequest()
+    final public function runPostRequest()
     {
-        return $this->runGetRequest();
+        $data = $this->context->request()->request->all();
+        if ($data) {
+            $this->set($data);
+        }
+        $data = $this->context->request()->files->all();
+        if ($data) {
+            $this->set($data);
+        }
+
+        $this->initRequest();
+
+        return $this->doPostRequest();
     }
 
     /**
      * @return RenderableResponse
      */
-    public function runGetRequest()
+    final public function runGetRequest()
     {
-        return $this->runRequest();
-    }
+        $data = $this->context->request()->query->all();
+        if ($data) {
+            $this->set($data);
+        }
 
-    /**
-     * @return Response | null
-     */
-    protected function runRequest()
-    {
-        return $this->renderResponse();
+        $this->initRequest();
+
+        return $this->doGetRequest();
     }
 
     /**
@@ -146,6 +138,20 @@ abstract class Action
         $this->render($response);
         $this->context->handler()->trigger("kernel.{$this->type()}.render#{$this->id()}", $response, $this);
         return $response;
+    }
+
+    /**
+     * @return RenderableResponse
+     */
+    protected function doPostRequest()
+    {
+    }
+
+    /**
+     * @return RenderableResponse
+     */
+    protected function doGetRequest()
+    {
     }
 
     protected function render(RenderableResponse $response)
