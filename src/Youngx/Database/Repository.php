@@ -223,12 +223,12 @@ class Repository
         return null;
     }
 
-    protected function cachingEntity(Entity $entity)
+    public function cachingEntity(Entity $entity)
     {
         $this->cache->save("entity.{$entity->type()}.{$entity->identifier()}", $entity, 86400);
     }
 
-    protected function deleteCachedEntity(Entity $entity)
+    public function deleteCachedEntity(Entity $entity)
     {
         unset($this->entities[$entity->type()][$entity->identifier()]);
         $this->cache->delete("entity.{$entity->type()}.{$entity->identifier()}");

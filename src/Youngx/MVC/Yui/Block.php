@@ -41,7 +41,10 @@ class Block
     {
         $this->handler->triggerWithMenu("kernel.block#{$this->name}", $this->contents, $this->name);
 
-        return implode("\n", $this->contents->all());
+        return $this->handler->triggerForValueWithMenu(array(
+                "kernel.block.render#{$this->name}",
+                'kernel.block.render'
+            ), $this->contents);
     }
 
     public function hasContents()

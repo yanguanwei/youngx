@@ -7,7 +7,7 @@ use Youngx\MVC\Html;
 
 class MessageHtml extends Html
 {
-    protected $type;
+    protected $type = 'success';
 
     public function __construct(Context $context, array $attributes = array())
     {
@@ -16,6 +16,11 @@ class MessageHtml extends Html
 
     public function getType()
     {
-        return $this->getOption('type', 'success');
+        return $this->type;
+    }
+
+    public function setType($type)
+    {
+        $this->type = $type;
     }
 }

@@ -28,6 +28,13 @@ class Handler extends \Youngx\EventHandler\Handler
         return call_user_func_array(array($this, 'triggerOne'), $arguments);
     }
 
+    public function triggerForValueWithMenu($eventNames)
+    {
+        $arguments = func_get_args();
+        $arguments[0] = $this->parseEventNameWithMenu($eventNames);
+        return call_user_func_array(array($this, 'triggerForValue'), $arguments);
+    }
+
     protected function parseEventNameWithMenu($eventNames)
     {
         $events = array();

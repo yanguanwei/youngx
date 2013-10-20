@@ -58,6 +58,9 @@ class FormWidget extends Widget
      */
     protected $buttonGroupWidget;
 
+    protected $autoRenderSubmitActions = true;
+    protected $alertErrors = false;
+
     public function name()
     {
         return 'form';
@@ -106,9 +109,27 @@ class FormWidget extends Widget
             $content .= "\n" . implode("\n", $this->sortableFields->all());
         }
 
-        $actionsWrapHtml = $this->getActionsWrapHtml();
-        if (!$actionsWrapHtml->isFormatted() && $actionsWrapHtml->visible()) {
-            $content .= "\n" . $actionsWrapHtml;
+        if ($this->autoRenderSubmitActions) {
+            $actionsWrapHtml = $this->getActionsWrapHtml();
+            if (!$actionsWrapHtml->isFormatted() && $actionsWrapHtml->visible()) {
+                $content .= "\n" . $actionsWrapHtml;
+            }
+        }
+
+        if ($this->alertErrors) {
+            $form = $this->action;
+            if ($form && $form instanceof Form) {
+                $errors = $form->errors();
+                if ($errors) {
+                    foreach ($errors as $name => $error) {
+                        if (is_array($error)) {
+                            $errors[$name] = implode("\\n", $error);
+                        }
+                    }
+                    $errors = implode("\\n", $errors);
+                    $this->context->assets()->registerScriptCode($this->getFormHtml()->getId(), "alert('{$errors}');")->setFootPosition();
+                }
+            }
         }
 
         return $this->getFormHtml()->setContent($content);
@@ -295,5 +316,37 @@ class FormWidget extends Widget
         $this->setAction($form);
 
         return $this;
+    }
+
+    /**
+     * @param boolean $autoRenderSubmitActions
+     */
+    public function setAutoRenderSubmitActions($autoRenderSubmitActions)
+    {
+        $this->autoRenderSubmitActions = $autoRenderSubmitActions;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getAutoRenderSubmitActions()
+    {
+        return $this->autoRenderSubmitActions;
+    }
+
+    /**
+     * @param boolean $alertErrors
+     */
+    public function setAlertErrors($alertErrors)
+    {
+        $this->alertErrors = $alertErrors;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getAlertErrors()
+    {
+        return $this->alertErrors;
     }
 }

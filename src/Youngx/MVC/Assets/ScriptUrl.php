@@ -7,7 +7,7 @@ class ScriptUrl extends UrlAsset
     const POSITION_HEAD = 1;
     const POSITION_FOOT = 2;
 
-    private $position = self::POSITION_FOOT;
+    private $position = self::POSITION_HEAD;
 
     public function getPosition()
     {

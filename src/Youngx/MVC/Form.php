@@ -135,12 +135,14 @@ abstract class Form extends Action
                     ), $this, $feh, $event);
 
                 $this->_errors = $feh;
-
-                return $this->renderResponse();
             }
 
             if ($event->hasResponse()) {
                 return $event->getResponse();
+            }
+
+            if ($feh->has()) {
+                return $this->renderResponse();
             }
         } catch (\Exception $e) {
             if ($e instanceof FormErrorException) {

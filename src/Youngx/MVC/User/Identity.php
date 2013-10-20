@@ -7,6 +7,8 @@ class Identity
     const ROLE_ANONYMOUS = 1;
     const ROLE_REGISTERED = 2;
     const ROLE_ADMINISTRATOR = 3;
+    const ROLE_SELLER = 4;
+    const ROLE_BUYER = 5;
 
     private $id;
     private $name;

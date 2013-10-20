@@ -99,6 +99,10 @@ abstract class Action
      */
     final public function runPostRequest()
     {
+        $data = $this->context->request()->query->all();
+        if ($data) {
+            $this->set($data);
+        }
         $data = $this->context->request()->request->all();
         if ($data) {
             $this->set($data);
@@ -145,6 +149,7 @@ abstract class Action
      */
     protected function doPostRequest()
     {
+        return $this->renderResponse();
     }
 
     /**
@@ -152,6 +157,7 @@ abstract class Action
      */
     protected function doGetRequest()
     {
+        return $this->renderResponse();
     }
 
     protected function render(RenderableResponse $response)

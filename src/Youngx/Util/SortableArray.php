@@ -60,4 +60,9 @@ class SortableArray
             return array();
         }
     }
+
+    public function getIterator()
+    {
+        return new \ArrayIterator($this->all());
+    }
 }

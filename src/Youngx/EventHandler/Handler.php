@@ -27,8 +27,11 @@ class Handler
         $return = null;
         foreach (is_array($eventNames) ? $eventNames : $this->resolveEvents($eventNames) as $eventName) {
             if ($this->hasListeners($eventName)) {
-                if (null !== ($return = $this->doTrigger($this->getListeners($eventName), $arguments))) {
-                    break;
+                if (null !== ($result = $this->doTrigger($this->getListeners($eventName), $arguments))) {
+                    $return = $result;
+                    if ($result === false) {
+                        break;
+                    }
                 }
             }
         }
@@ -181,8 +184,11 @@ class Handler
     {
         $return = null;
         foreach ($listeners as $listener) {
-            if (null !== ($return = call_user_func_array($listener, $arguments))) {
-                break;
+            if (null !== ($result = call_user_func_array($listener, $arguments))) {
+                $return = $result;
+                if ($result === false) {
+                    break;
+                }
             }
         }
         return $return;

@@ -260,6 +260,11 @@ class Context
         return $this->app->locateUrl($uri);
     }
 
+    public function locateImageUrl($uri, $width = 0, $height = 0)
+    {
+        return $this->value('image-url', $uri, $width, $height);
+    }
+
     /**
      * @param string | null $name
      * @return \Monolog\Logger

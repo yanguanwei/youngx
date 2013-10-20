@@ -23,6 +23,8 @@ class Html implements InputInterface
     private $formatter;
     private $value;
     private $hidden = false;
+    private $skin;
+
     /**
      * @var SortableArray
      */
@@ -84,6 +86,10 @@ class Html implements InputInterface
             if (!$this->formatted) {
                 $formatter = $this->getFormatter();
 
+                if ($this->skin) {
+                    $this->context->handler()->trigger("kernel.html#{$formatter}@skin:{$this->skin}", $this);
+                }
+
                 foreach ($this->config as $key => $value) {
                     $this->context->handler()->triggerOne(array(
                             "kernel.html#{$this->getFormatter()}@config:{$key}",
@@ -92,7 +98,8 @@ class Html implements InputInterface
                 }
 
                 $this->format();
-                $this->context->handler()->trigger("kernel.html.format#{$formatter}", $this, $formatter);
+                $this->context->handler()->triggerWithMenu("kernel.html.format#{$formatter}", $this, $formatter);
+
                 $this->formatted = true;
             }
             return (string) $this->toString();
@@ -359,9 +366,14 @@ class Html implements InputInterface
         } else if ($key === 'style') {
             if (!is_array($value)) {
                 $t = array();
-                foreach (explode(';', $value) as $v) {
-                    list($k, $v) = explode(':', $v);
-                    $t[trim($k)] = trim($v);
+                foreach (explode(';', trim($value, ';')) as $v) {
+                    if ($v && strpos($v, ':') !== false) {
+                        list($k, $v) = explode(':', $v);
+                        $k = trim($k);
+                        if ($k) {
+                            $t[$k] = trim($v);
+                        }
+                    }
                 }
                 $value = $t;
             }
@@ -543,5 +555,31 @@ class Html implements InputInterface
         $this->hidden = false;
 
         return $this;
+    }
+
+    /**
+     * @param mixed $skin
+     */
+    public function setSkin($skin)
+    {
+        $this->skin = $skin;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSkin()
+    {
+        return $this->skin;
+    }
+
+    public function setAppend($content)
+    {
+        $this->append($content);
+    }
+
+    public function setPrepend($content)
+    {
+        $this->prepend($content);
     }
 }
