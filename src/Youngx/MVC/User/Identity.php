@@ -68,7 +68,7 @@ class Identity
 
     public function hasRole($role)
     {
-        return isset($this->roles[$role]);
+        return array_search($role, $this->roles) !== false;
     }
 
     public function getPassword()
@@ -84,5 +84,15 @@ class Identity
     public function isLogged()
     {
         return $this->id > 0;
+    }
+
+    public function isBuyer()
+    {
+        return $this->hasRole(self::ROLE_BUYER);
+    }
+
+    public function isSeller()
+    {
+        return $this->hasRole(self::ROLE_SELLER);
     }
 }

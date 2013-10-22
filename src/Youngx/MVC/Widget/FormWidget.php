@@ -214,6 +214,14 @@ class FormWidget extends Widget
         return $this->fieldWidgets[$name] = $this->context->widget('Field', array_merge($default, $config));
     }
 
+    public function captchaInput(array $attributes = array())
+    {
+        if ($this->action) {
+            $attributes['#captcha_id'] = $this->action->id();
+            return $this->input('captcha' ,'captcha', $attributes);
+        }
+    }
+
     /**
      * @return FieldWidget[]
      */

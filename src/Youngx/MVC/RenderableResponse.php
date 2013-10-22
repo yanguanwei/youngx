@@ -91,4 +91,12 @@ class RenderableResponse extends Response
 
         return $this;
     }
+
+    public function render($file, array $variables = array())
+    {
+        $this->setFile($file)
+            ->addVariables($variables);
+
+        return $this;
+    }
 }

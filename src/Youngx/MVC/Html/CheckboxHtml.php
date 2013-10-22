@@ -50,6 +50,10 @@ class CheckboxHtml extends Html
 
     protected function format()
     {
+        if (!$this->has('value')) {
+            $this->set('value', '1');
+        }
+
         $this->set('checked', $this->has('value') && in_array($this->get('value'), (array) $this->getValue()));
 
         if ($this->label) {

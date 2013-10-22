@@ -3,6 +3,7 @@
 namespace Youngx\MVC;
 
 use Symfony\Component\HttpFoundation\Response;
+use Youngx\Util\Captcha\Captcha;
 use Youngx\MVC\Event\GetResponseEvent;
 use Youngx\MVC\Form\FormErrorException;
 use Youngx\MVC\Form\FormErrorHandler;
@@ -14,6 +15,9 @@ abstract class Form extends Action
      * @var FormErrorHandler | null
      */
     private $_errors;
+
+    protected $hasCaptcha = false;
+    protected $captcha;
 
     public function error($name)
     {
@@ -164,6 +168,14 @@ abstract class Form extends Action
         return $this->renderResponse();
     }
 
+    protected function validateCaptcha(FormErrorHandler $feh)
+    {
+        $captcha = new Captcha($this->id());
+        if (!$captcha->isValid($this->captcha)) {
+            $feh->add('captcha', '验证码错误！');
+        }
+    }
+
     protected function autoValidate(Context $context, FormErrorHandler $errorHandler)
     {
         $disabledFields = $this->disabledFields();
@@ -187,6 +199,10 @@ abstract class Form extends Action
                     break;
                 }
             }
+        }
+
+        if ($this->hasCaptcha) {
+            $this->validateCaptcha($errorHandler);
         }
     }
 
@@ -249,5 +265,21 @@ abstract class Form extends Action
      */
     protected function render(RenderableResponse $response)
     {
+    }
+
+    /**
+     * @param mixed $captcha
+     */
+    public function setCaptcha($captcha)
+    {
+        $this->captcha = $captcha;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCaptcha()
+    {
+        return $this->captcha;
     }
 }

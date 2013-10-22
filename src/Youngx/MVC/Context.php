@@ -286,6 +286,34 @@ class Context
         $this->handler()->trigger('user.logout', $this->identity());
     }
 
+    public function mail($emails, $subject, $content)
+    {
+        $mailer = $this->get('mailer');
+        if ($mailer instanceof \PHPMailer) {
+            if (!is_array($emails)) {
+                $emails = (array) $emails;
+            }
+
+            foreach ($emails as $email => $name) {
+                if (is_int($email)) {
+                    $email = $name;
+                    $name = '';
+                }
+                $mailer->AddAddress($email, $name);
+            }
+
+            $mailer->Subject = $subject;
+            $mailer->MsgHTML($content);
+
+            if ($mailer->Send()) {
+                return true;
+            } else {
+                $this->log()->error("mailer: {$mailer->ErrorInfo}", array('emails' => $emails, 'subject' => $subject));
+                return false;
+            }
+        }
+    }
+
     public function matchRoute($path)
     {
         try {
